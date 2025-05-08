@@ -5,6 +5,9 @@ import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 const app: Application = express();
 app.use(express.json());
 app.use(cookieParser());
+
+// Optional: Enable CORS (currently commented out)
+// import cors from "cors";
 // app.use(
 //   cors({
 //     origin: ["http://localhost:5173", "https://librant-book-store.vercel.app"],
@@ -13,11 +16,9 @@ app.use(cookieParser());
 // );
 
 app.use("/api/v1", router);
-
 app.get("/", (req, res) => {
   res.send("Welcome from Librant Book Store");
 });
 
 app.use(globalErrorHandler);
-
 export const App = app;

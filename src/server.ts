@@ -4,7 +4,7 @@ import { App } from "./app";
 import Config from "./app/Config";
 let server: Server;
 
-async function main() {
+async function bootstrap() {
   try {
     await mongoose.connect(Config.database_url as string);
     console.log("🟢 Connected to MongoDB");
@@ -17,4 +17,6 @@ async function main() {
   }
 }
 
-main();
+bootstrap();
+
+export default App;

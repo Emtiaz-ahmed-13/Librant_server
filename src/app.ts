@@ -6,14 +6,13 @@ const app: Application = express();
 app.use(express.json());
 app.use(cookieParser());
 
-// Optional: Enable CORS (currently commented out)
-// import cors from "cors";
-// app.use(
-//   cors({
-//     origin: ["http://localhost:5173", "https://librant-book-store.vercel.app"],
-//     credentials: true,
-//   })
-// );
+import cors from "cors";
+app.use(
+  cors({
+    origin: ["http://localhost:5173", "https://librant-server.vercel.app/"],
+    credentials: true,
+  })
+);
 
 app.use("/api/v1", router);
 app.get("/", (req, res) => {

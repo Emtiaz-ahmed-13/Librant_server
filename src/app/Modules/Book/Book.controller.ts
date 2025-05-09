@@ -71,6 +71,51 @@ const GetAuthors = catchAsync(async (req, res) => {
   });
 });
 
+// New controller methods for featured books, new arrivals, and categories
+const GetFeaturedBooks = catchAsync(async (req, res) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 10;
+  const result = await BookServices.GetFeaturedBooks(limit);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Featured books retrieved successfully",
+    data: result,
+  });
+});
+
+const GetNewArrivals = catchAsync(async (req, res) => {
+  const limit = req.query.limit ? Number(req.query.limit) : 10;
+  const result = await BookServices.GetNewArrivals(limit);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "New arrivals retrieved successfully",
+    data: result,
+  });
+});
+
+const GetBooksByCategory = catchAsync(async (req, res) => {
+  const { category } = req.params;
+  const limit = req.query.limit ? Number(req.query.limit) : 20;
+  const result = await BookServices.GetBooksByCategory(category, limit);
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: `Books for category ${category} retrieved successfully`,
+    data: result,
+  });
+});
+
+const GetAllCategories = catchAsync(async (req, res) => {
+  const result = await BookServices.GetAllCategories();
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "All categories retrieved successfully",
+    data: result,
+  });
+});
+
 export const BookController = {
   CreateBook,
   RetriveBooks,
@@ -79,4 +124,9 @@ export const BookController = {
   DeleteBook,
   UpdateBook,
   GetAuthors,
+  // Add new controller methods
+  GetFeaturedBooks,
+  GetNewArrivals,
+  GetBooksByCategory,
+  GetAllCategories,
 };

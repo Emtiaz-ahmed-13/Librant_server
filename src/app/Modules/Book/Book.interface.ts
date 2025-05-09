@@ -15,4 +15,6 @@ export interface IBook {
   price: number;
   inStock: boolean;
   isDeleted: boolean;
+  isFeatured?: boolean;
+  publishedAt?: Date;
 }

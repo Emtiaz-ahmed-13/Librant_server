@@ -14,6 +14,8 @@ const BookSchema = new Schema<IBook>({
   quantity: { type: Number, required: true },
   inStock: { type: Boolean, required: true, default: true },
   isDeleted: { type: Boolean, default: false },
+  isFeatured: { type: Boolean, default: false },
+  publishedAt: { type: Date, default: Date.now },
 });
 
 const BookModel = model<IBook>("Book", BookSchema);

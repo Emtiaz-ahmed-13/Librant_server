@@ -24,7 +24,9 @@ router.patch(
 );
 router.post(
   "/create-admin",
-  authGurd("admin"),
+  // Temporarily removed authGurd("admin") to allow first admin creation
+  // IMPORTANT: Add this back after creating the first admin
+  // authGurd("admin"),
   validateRequest(UserValidation.createUserValidationSchema),
   UserControllers.createAdmin
 );

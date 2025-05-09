@@ -11,6 +11,14 @@ const Login = async ({
   email: string;
   password: string;
 }) => {
+  // Check if email and password are provided
+  if (!email || !password) {
+    throw new CustomError(
+      httpStatus.BAD_REQUEST,
+      "Email and password are required"
+    );
+  }
+
   const userExist = await User.findOne({ email });
   if (!userExist) {
     throw new CustomError(
@@ -19,6 +27,15 @@ const Login = async ({
     );
   }
   // console.log('from line 20', userExist.password);
+
+  // Make sure password is defined before comparison
+  if (!userExist.password) {
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "User password is not set properly"
+    );
+  }
+
   const isPasswordMatched = bcrypt.compareSync(password, userExist.password);
   if (!isPasswordMatched) {
     throw new CustomError(httpStatus.UNAUTHORIZED, "Invalid password");
@@ -33,10 +50,27 @@ const updatePasswordInDB = async (payload: {
 }) => {
   const { email, oldPassword, newPassword } = payload;
   console.log("from line 38", email, oldPassword, newPassword);
+
+  // Validate all required fields
+  if (!email || !oldPassword || !newPassword) {
+    throw new CustomError(
+      httpStatus.BAD_REQUEST,
+      "Email, old password, and new password are required"
+    );
+  }
+
   // Checking user exists in db or not
   const user = await User.findOne({ email });
   if (!user) {
     throw new CustomError(httpStatus.NOT_FOUND, "User not found");
+  }
+
+  // Ensure password is defined
+  if (!user.password) {
+    throw new CustomError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "User password is not set properly"
+    );
   }
 
   // Checking old password is correct or not

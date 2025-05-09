@@ -6,15 +6,30 @@ const CreateBookInDB = async (payload: IBook) => {
   const result = await BookModel.create(payload);
   return result;
 };
-const RetriveAllBookFromDB = async (query: Record<string, unknown>) => {
-  const AllBookQuery = new QueryBuilder(BookModel.find(), query)
-    .search(["author", "category", "title"])
-    .filter()
-    .limit();
 
-  const documentCount = await AllBookQuery.countTotal();
-  const result = await AllBookQuery.modelQuery;
-  return result;
+const RetriveAllBookFromDB = async (query: Record<string, unknown>) => {
+  try {
+    const AllBookQuery = new QueryBuilder(BookModel.find(), query)
+      .search(["author", "category", "title"])
+      .filter()
+      .limit();
+
+    // Get count with proper error handling
+    const documentCount = await AllBookQuery.countTotal();
+
+    // Add timeout to main query too
+    const result = await AllBookQuery.modelQuery.maxTimeMS(30000).exec();
+
+    return {
+      meta: {
+        count: documentCount,
+      },
+      data: result,
+    };
+  } catch (error) {
+    console.error("Error retrieving books:", error);
+    throw error;
+  }
 };
 
 const RetriveBookFromDB = async (id: string) => {

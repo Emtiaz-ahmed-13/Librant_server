@@ -1,4 +1,4 @@
-import { FilterQuery, Query } from 'mongoose';
+import { FilterQuery, Query } from "mongoose";
 
 class QueryBuilder<T> {
   public modelQuery: Query<T[], T>;
@@ -15,8 +15,8 @@ class QueryBuilder<T> {
         $or: searchableFields.map(
           (field) =>
             ({
-              [field]: { $regex: searchTerm, $options: 'i' },
-            }) as FilterQuery<T>,
+              [field]: { $regex: searchTerm, $options: "i" },
+            }) as FilterQuery<T>
         ),
       });
     }
@@ -24,7 +24,7 @@ class QueryBuilder<T> {
   }
   filter() {
     const queryObject = { ...this.query };
-    const excludedFields = ['searchTerm', 'page', 'limit', 'sort'];
+    const excludedFields = ["searchTerm", "page", "limit", "sort"];
     excludedFields.forEach((field) => delete queryObject[field]);
     if (queryObject.minPrice && queryObject.maxPrice) {
       queryObject.price = {
@@ -42,10 +42,20 @@ class QueryBuilder<T> {
     return this;
   }
 
-  countTotal() {
-    const totalQueries = this.modelQuery.getFilter();
-    const totalDocuments = this.modelQuery.model.countDocuments(totalQueries);
-    return totalDocuments;
+  async countTotal() {
+    try {
+      const totalQueries = this.modelQuery.getFilter();
+      // Add maxTimeMS to prevent timeout on large collections
+      const totalDocuments = await this.modelQuery.model
+        .countDocuments(totalQueries)
+        .maxTimeMS(30000) // 30 second timeout
+        .exec();
+      return totalDocuments;
+    } catch (error) {
+      console.error("Error counting documents:", error);
+      // Return 0 if count operation times out
+      return 0;
+    }
   }
 }
 

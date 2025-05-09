@@ -17,4 +17,5 @@ export interface IBook {
   isDeleted: boolean;
   isFeatured?: boolean;
   publishedAt?: Date;
+  imageUrl?: string;
 }

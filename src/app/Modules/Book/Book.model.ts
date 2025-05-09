@@ -16,6 +16,10 @@ const BookSchema = new Schema<IBook>({
   isDeleted: { type: Boolean, default: false },
   isFeatured: { type: Boolean, default: false },
   publishedAt: { type: Date, default: Date.now },
+  imageUrl: {
+    type: String,
+    default: "https://placehold.co/600x400?text=Book+Cover",
+  },
 });
 
 const BookModel = model<IBook>("Book", BookSchema);

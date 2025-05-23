@@ -9,7 +9,12 @@ app.use(cookieParser());
 import cors from "cors";
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://librant-client.vercel.app"],
+    origin: [
+      "http://localhost:5173",
+      "https://librant-client.vercel.app",
+      "https://librant-client-git-main-emtiazahmed.vercel.app",
+      "https://librant-client-emtiazahmed.vercel.app",
+    ],
     credentials: true,
   })
 );

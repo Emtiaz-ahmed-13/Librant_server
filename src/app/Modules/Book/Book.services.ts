@@ -33,7 +33,7 @@ const RetriveAllBookFromDB = async (query: Record<string, unknown>) => {
 };
 
 const RetriveBookFromDB = async (id: string) => {
-  const result = await BookModel.findById(id);
+  const result = await BookModel.findOne({ _id: id, isDeleted: false });
   return result;
 };
 

@@ -23,6 +23,10 @@ const UserSchema = new Schema<IUser>(
       enum: ["activated", "deactivated"],
       default: "activated",
     },
+    image: {
+      type: String,
+      default: "https://i.postimg.cc/KvFWRGhK/emtiazP.jpg",
+    },
   },
   {
     timestamps: true,

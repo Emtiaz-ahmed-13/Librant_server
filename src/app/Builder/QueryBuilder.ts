@@ -34,7 +34,10 @@ class QueryBuilder<T> {
       delete queryObject.minPrice;
       delete queryObject.maxPrice;
     }
-    this.modelQuery = this.modelQuery.find(queryObject as FilterQuery<T>);
+    this.modelQuery = this.modelQuery.find({
+      ...queryObject,
+      isDeleted: false,
+    } as FilterQuery<T>);
     return this;
   }
   limit() {
